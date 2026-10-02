@@ -4,3 +4,10 @@ ux-portfolio/dist/
 ux-portfolio/.openai/
 ux-portfolio/*preview.jpg
 ux-portfolio/reference-text-motion.jpg
+
+ux-portfolio/preview-server.cjs
+ux-portfolio/wheel-image-preview.html
+ux-portfolio/home-motion-reference.jpg
+ux-portfolio/assets/*-wheel-preview.png
+ux-portfolio/assets/logos/*.png
+ux-portfolio/assets/logos/xjtlu-official.jpg
