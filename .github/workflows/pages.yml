@@ -19,6 +19,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm run build
+        env:
+          SITE_BASE_PATH: /portfolio
       - uses: actions/configure-pages@v5
         with:
           enablement: true
