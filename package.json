@@ -1,0 +1,9 @@
+{
+  "name": "cami-fang-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ux-portfolio/server.cjs",
+    "build": "node build.cjs"
+  }
+}

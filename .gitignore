@@ -1,0 +1,6 @@
+.tmp-video-tools/
+node_modules/
+ux-portfolio/dist/
+ux-portfolio/.openai/
+ux-portfolio/*preview.jpg
+ux-portfolio/reference-text-motion.jpg
