@@ -6,5 +6,15 @@
     "directory": "./ux-portfolio/dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "camifang.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.camifang.com",
+      "custom_domain": true
+    }
+  ]
 }

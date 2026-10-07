@@ -19,3 +19,7 @@ The build generates `about/index.html` and `work/{triply,fluffbud,m-echo,reedy}/
 ## GitHub Pages
 
 The GitHub Actions workflow supplies `SITE_BASE_PATH=/portfolio` so existing GitHub Pages links and assets continue to work at https://cami99-star.github.io/portfolio/.
+
+## Custom domain
+
+The Cloudflare Worker is configured to serve https://camifang.com and https://www.camifang.com via Workers Custom Domains. DNS and HTTPS are managed by Cloudflare. The root-relative Workers build preserves direct project routes.
