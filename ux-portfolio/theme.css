@@ -1,6 +1,6 @@
 html,body{transition:background-color .35s ease,color .35s ease}
 .theme-toggle{position:fixed;right:32px;top:21px;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:50%;padding:0;background:transparent;color:#e8e8eb;z-index:95;cursor:pointer;transition:background .25s,color .25s}
-.theme-toggle:hover{background:#ffffff12}.theme-toggle:focus-visible{outline:2px solid #8efff7;outline-offset:4px}.theme-toggle svg{position:absolute;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round;transition:opacity .3s,transform .5s cubic-bezier(.2,.8,.2,1)}.theme-toggle .theme-sun{opacity:1;transform:rotate(0deg) scale(1)}.theme-toggle .theme-moon{opacity:0;transform:rotate(-90deg) scale(.5)}
+.theme-toggle:hover{background:#ffffff12}.theme-toggle:focus-visible{outline:2px solid #8efff7;outline-offset:4px}.theme-toggle svg{position:absolute;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round;transition:opacity .3s,transform .5s cubic-bezier(.2,.8,.2,1),scale .4s cubic-bezier(.2,.8,.2,1)}.theme-toggle .theme-sun{opacity:1;transform:rotate(0deg) scale(1)}.theme-toggle .theme-moon{opacity:0;transform:rotate(-90deg) scale(.5)}
 html[data-theme="light"]{background:#fff;color-scheme:light;--bg:#fff;--ink:#171719;--muted:#6a6a70;--case-accent:#4a508e}
 html[data-theme="light"] body{background:#fff;color:#171719}
 html[data-theme="light"] .theme-toggle{color:#222}html[data-theme="light"] .theme-toggle:hover{background:#00000009}html[data-theme="light"] .theme-toggle .theme-sun{opacity:0;transform:rotate(90deg) scale(.5)}html[data-theme="light"] .theme-toggle .theme-moon{opacity:1;transform:rotate(0deg) scale(1)}
@@ -33,3 +33,5 @@ html[data-theme="light"] .work-page .work-card{background:var(--work-card-bg);bo
 html[data-theme="light"] .work-page .work-heading h1,html[data-theme="light"] .work-page .work-card-title{color:var(--work-primary)}
 html[data-theme="light"] .work-page .work-heading p,html[data-theme="light"] .work-page .work-card p,html[data-theme="light"] .work-page .work-card small,html[data-theme="light"] .work-page .project-arrow{color:var(--work-secondary)}
 html[data-theme="light"] .work-page .work-card:hover,html[data-theme="light"] .work-page .work-card:focus-visible{border-color:#a5a5b0;box-shadow:0 12px 36px #00000010}
+
+.theme-toggle:hover svg,.theme-toggle:focus-visible svg{scale:1.25}

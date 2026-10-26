@@ -4,7 +4,7 @@
   const style = document.createElement('style');
   style.textContent = `
     :root{--glass-cursor-rgb:112,255,248}
-    html[data-theme="light"]{--glass-cursor-rgb:255,44,29}
+    html[data-theme="light"]{--glass-cursor-rgb:255,77,134}
     html.glass-cursor-active,html.glass-cursor-active *{cursor:none!important}
     .glass-cursor{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none!important;z-index:2147483647;visibility:hidden}
     .glass-cursor.is-visible{visibility:visible}.glass-cursor.is-menu-hidden{visibility:hidden}
