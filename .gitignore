@@ -11,3 +11,11 @@ ux-portfolio/home-motion-reference.jpg
 ux-portfolio/assets/*-wheel-preview.png
 ux-portfolio/assets/logos/*.png
 ux-portfolio/assets/logos/xjtlu-official.jpg
+
+# Local review material and superseded resumes
+tmp/
+content/
+ux-portfolio/*-reference.jpg
+ux-portfolio/work-day-before.jpg
+ux-portfolio/assets/Cami-Fang-Resume*.pdf
+!ux-portfolio/assets/Cami-Fang-Resume-Website-v2.pdf

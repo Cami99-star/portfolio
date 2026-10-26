@@ -8,7 +8,7 @@ if (base && !/^\/[a-zA-Z0-9/_-]+$/.test(base)) {
 }
 const out = 'ux-portfolio/dist';
 const pages = [
-  ['index', ''], ['about', 'about'], ['triply', 'work/triply'],
+  ['index', ''], ['work', 'work'], ['about', 'about'], ['triply', 'work/triply'],
   ['fluffbud', 'work/fluffbud'], ['m-echo', 'work/m-echo'], ['reedy', 'work/reedy'],
 ];
 fs.mkdirSync(out, { recursive: true });
@@ -17,12 +17,18 @@ for (const [name, route] of pages) {
   fs.mkdirSync(dir, { recursive: true });
   let html = fs.readFileSync(`ux-portfolio/${name}.html`, 'utf8');
   if (base) {
-    html = html.replace(/(["'])\/(assets\/|cursor-trail\.js|work\/|about)/g, '$1' + base + '/$2')
+    html = html.replace(/(["'])\/(assets\/|(?:cursor-trail|bubble-menu|section-reveal|theme-toggle)\.js|(?:dark-theme|case-study|theme)\.css|work\/|about)/g, '$1' + base + '/$2')
       .replace(/href="\/"/g, 'href="' + base + '/"');
   }
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 fs.cpSync('ux-portfolio/assets', out + '/assets', { recursive: true });
 fs.copyFileSync('ux-portfolio/cursor-trail.js', out + '/cursor-trail.js');
+fs.copyFileSync('ux-portfolio/bubble-menu.js', out + '/bubble-menu.js');
+fs.copyFileSync('ux-portfolio/dark-theme.css', out + '/dark-theme.css');
+fs.copyFileSync('ux-portfolio/case-study.css', out + '/case-study.css');
+fs.copyFileSync('ux-portfolio/section-reveal.js', out + '/section-reveal.js');
+fs.copyFileSync('ux-portfolio/theme.css', out + '/theme.css');
+fs.copyFileSync('ux-portfolio/theme-toggle.js', out + '/theme-toggle.js');
 fs.writeFileSync(out + '/.nojekyll', '');
 console.log(`Built static routes at ${base || '/'}`);

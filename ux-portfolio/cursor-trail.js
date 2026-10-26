@@ -1,43 +1,65 @@
 (() => {
-  const motion = matchMedia('(prefers-reduced-motion: reduce)');
-  const pointer = matchMedia('(any-pointer: fine)');
-  const layer = document.createElement('div');
-  layer.setAttribute('aria-hidden', 'true');
-  Object.assign(layer.style, { position: 'fixed', inset: '0', pointerEvents: 'none', zIndex: '10000', overflow: 'hidden' });
-  document.body.appendChild(layer);
-  const butterflies = [];
-  let lastTime = -Infinity;
-  let lastX, lastY;
-  const drawing = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" width="10" height="10" fill="none" stroke="#30312d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M31 22C25 12 11 1 5 4C0 7 11 21 13 26C17 31 26 30 32 26C39 30 49 29 52 24C55 17 63 7 59 3C55 0 39 12 33 22M14 29C13 39 19 48 25 44C30 41 31 34 32 28M50 29C52 37 45 48 39 44C34 41 33 34 32 28M30 13L32 28L33 39M29 17L26 10M34 17L37 9"/></svg>';
-  function clear() {
-    butterflies.splice(0).forEach(item => item.remove());
-    lastX = lastY = undefined;
+  const finePointer = matchMedia('(any-pointer: fine)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const style = document.createElement('style');
+  style.textContent = `
+    :root{--glass-cursor-rgb:112,255,248}
+    html[data-theme="light"]{--glass-cursor-rgb:255,44,29}
+    html.glass-cursor-active,html.glass-cursor-active *{cursor:none!important}
+    .glass-cursor{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none!important;z-index:2147483647;visibility:hidden}
+    .glass-cursor.is-visible{visibility:visible}.glass-cursor.is-menu-hidden{visibility:hidden}
+    .glass-cursor-orb{position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;box-sizing:border-box;pointer-events:none!important;
+      background:radial-gradient(circle at 29% 23%,#ffffffb0 0%,rgba(var(--glass-cursor-rgb),.25) 17%,rgba(var(--glass-cursor-rgb),.07) 48%,rgba(var(--glass-cursor-rgb),.22) 78%,rgba(var(--glass-cursor-rgb),.44) 100%);
+      border:1px solid rgba(var(--glass-cursor-rgb),.65);box-shadow:inset 0 1px 2px #ffffffcc,inset 0 -2px 4px rgba(var(--glass-cursor-rgb),.33),0 0 9px rgba(var(--glass-cursor-rgb),.14);
+      backdrop-filter:blur(1px) saturate(1.35);-webkit-backdrop-filter:blur(1px) saturate(1.35);
+      transform:scale(1);transition:transform 230ms cubic-bezier(.2,1.35,.3,1)}
+    .glass-cursor-orb::before{content:'';position:absolute;left:5px;top:3px;width:10px;height:4px;border-radius:50%;background:linear-gradient(110deg,#ffffffcc,#ffffff00);transform:rotate(-30deg);filter:blur(.3px)}
+    .glass-cursor.is-interactive .glass-cursor-orb{transform:scale(1.5)}
+    @media(prefers-reduced-motion:reduce){.glass-cursor-orb{transition:none}}
+    @media(forced-colors:active){html.glass-cursor-active,html.glass-cursor-active *{cursor:auto!important}.glass-cursor{display:none}}
+  `;
+  document.head.appendChild(style);
+  const cursor = document.createElement('div');
+  cursor.className = 'glass-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  cursor.innerHTML = '<span class="glass-cursor-orb"></span>';
+  document.body.appendChild(cursor);
+  let x = 0, y = 0, visible = false;
+  const selector = 'a[href],button,input:not([type="hidden"]),select,textarea,summary,[role="button"],[role="link"],[role="tab"],[role="checkbox"],[onclick]';
+  function interactive(target) {
+    if (!(target instanceof Element)) return false;
+    const control = target.closest(selector);
+    if (target.closest('[inert],[disabled],[aria-disabled="true"]')) return false;
+    return Boolean(control) || getComputedStyle(target).cursor === 'pointer';
+  }
+  function update(target) {
+    // Native dialogs live in the top layer; keep the glass visible above their content.
+    const dialog = target instanceof Element ? target.closest('dialog[open]') : null;
+    const parent = dialog || document.body;
+    if (cursor.parentElement !== parent) parent.appendChild(cursor);
+    cursor.style.transform = `translate3d(${x}px,${y}px,0)`;
+    cursor.classList.toggle('is-interactive', interactive(target));
+    cursor.classList.toggle('is-menu-hidden', Boolean(target instanceof Element && target.closest('.bubble-nav') && !target.closest('.nav-contact-panel')));
+  }
+  function hide() {
+    visible = false;
+    cursor.classList.remove('is-visible', 'is-interactive');
+    document.documentElement.classList.remove('glass-cursor-active');
   }
   document.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse' || motion.matches || !pointer.matches) return;
-    const now = performance.now();
-    if (now - lastTime < 20 || (event.clientX === lastX && event.clientY === lastY)) return;
-    lastTime = now;
-    const angle = lastX === undefined ? 0 : Math.atan2(event.clientY - lastY, event.clientX - lastX) * 180 / Math.PI + 90;
-    lastX = event.clientX;
-    lastY = event.clientY;
-    const butterfly = document.createElement('span');
-    butterfly.innerHTML = drawing;
-    Object.assign(butterfly.style, { position: 'absolute', left: `${event.clientX}px`, top: `${event.clientY}px`, width: '10px', height: '10px', pointerEvents: 'none' });
-    layer.appendChild(butterfly);
-    butterflies.push(butterfly);
-    if (butterflies.length > 15) butterflies.shift().remove();
-    const animation = butterfly.animate([
-      { opacity: 1, transform: `translate(-50%, -50%) rotate(${angle}deg) scale(1)` },
-      { opacity: 0, transform: `translate(-50%, -50%) rotate(${angle}deg) scale(${2 / 10})` }
-    ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
-    animation.onfinish = () => {
-      butterfly.remove();
-      const index = butterflies.indexOf(butterfly);
-      if (index !== -1) butterflies.splice(index, 1);
-    };
+    if (event.pointerType !== 'mouse' || !finePointer.matches) { hide(); return; }
+    x = event.clientX; y = event.clientY;
+    update(event.target);
+    visible = true;
+    cursor.classList.add('is-visible');
+    document.documentElement.classList.add('glass-cursor-active');
   }, { passive: true });
-  document.documentElement.addEventListener('pointerleave', clear);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) clear(); });
-  motion.addEventListener('change', clear);
+  document.addEventListener('pointerover', event => { if (visible) update(event.target); }, { passive: true });
+  document.addEventListener('scroll', () => { if (visible) update(document.elementFromPoint(x, y)); }, { passive: true, capture: true });
+  document.documentElement.addEventListener('pointerleave', hide);
+  document.addEventListener('pointerdown', event => { if (event.pointerType !== 'mouse') hide(); }, { passive: true });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) hide(); });
+  document.addEventListener('close', () => { if (visible) update(document.elementFromPoint(x, y)); }, true);
+  window.addEventListener('blur', hide);
+  finePointer.addEventListener('change', hide);
 })();
