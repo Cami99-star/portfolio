@@ -1,7 +1,7 @@
 WEBVTT
 
 00:00.000 --> 00:08.000
-M-echo: a shared meeting device and companion app. A focused design iteration by Cami Fang.
+M-echo is a shared meeting device and companion app. This is my focused design iteration.
 
 00:08.000 --> 00:16.000
 A calendar and timeline bring planned meetings into view before connecting.
@@ -10,4 +10,4 @@ A calendar and timeline bring planned meetings into view before connecting.
 The revised flow connects device reservation with meeting scheduling.
 
 00:24.000 --> 00:32.000
-All five participants completed three tasks: reviewing reservation details, creating a new meeting reservation, and sharing an AI-generated meeting summary.
+All five testers reviewed a reservation, booked a meeting, and shared an AI-generated summary.
